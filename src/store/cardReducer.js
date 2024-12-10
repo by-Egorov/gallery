@@ -2,6 +2,8 @@ const initialState = {
 	cards: [],
 	loading: false,
 	error: null,
+	filteredCards: [],
+	filterType: '',
 }
 
 export const cardReducer = (state = initialState, action) => {
@@ -19,25 +21,45 @@ export const cardReducer = (state = initialState, action) => {
 			}
 		}
 		case 'CARD_LIKE': {
+			const updatedCards = state.cards.map(card =>
+					card.id === action.payload ? { ...card, like: !card.like } : card
+			);
 			return {
-				...state,
-				cards: state.cards.map(card =>
-					card.id === action.payload
-						? { ...card, like: !card.like }
-						: card
-				),
-			}
-		}
-		case 'CARD_FAVORITE': {
+					...state,
+					cards: updatedCards,
+					filteredCards: state.filterType ? updatedCards.filter(card => {
+							if (state.filterType === 'Like') return card.like;
+							if (state.filterType === 'Favorite') return card.favorite;
+							return true;
+					}) : updatedCards,
+			};
+	}
+	case 'CARD_FAVORITE': {
+			const updatedCards = state.cards.map(card =>
+					card.id === action.payload ? { ...card, favorite: !card.favorite } : card
+			);
 			return {
-				...state,
-				cards: state.cards.map(card =>
-					card.id === action.payload
-						? { ...card, favorite: !card.favorite }
-						: card
-				),
-			}
-		}
+					...state,
+					cards: updatedCards,
+					filteredCards: state.filterType ? updatedCards.filter(card => {
+							if (state.filterType === 'Like') return card.like;
+							if (state.filterType === 'Favorite') return card.favorite;
+							return true;
+					}) : updatedCards,
+			};
+	}
+	case 'FILTER_CARD': {
+			const filtered = state.cards.filter(card => {
+					if (action.payload === 'Like') return card.like;
+					if (action.payload === 'Favorite') return card.favorite;
+					return true; // Если фильтр пустой, показываем все карточки
+			});
+			return {
+					...state,
+					filterType: action.payload,
+					filteredCards: filtered,
+			};
+	}
 		case 'FETCH_CARDS_REQUEST': {
 			return {
 				...state,
