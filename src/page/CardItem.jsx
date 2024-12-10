@@ -3,7 +3,6 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Card, Button } from 'antd'
 import { DeleteFilled, StarFilled, LikeFilled } from '@ant-design/icons'
-import { setLike, setFavorite, removeCard } from '../store/cardActions'
 
 const { Meta } = Card
 
@@ -21,9 +20,6 @@ const CardItem = () => {
 		}
 	}, [id, cards])
 
-	const handleSetLike = id => dispatch(setLike(Number(id)))
-	const handleSetFavorite = id => dispatch(setFavorite(Number(id)))
-	const handleRemoveCard = id => dispatch(removeCard(Number(id)))
 
 	return (
 		<>

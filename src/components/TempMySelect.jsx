@@ -7,11 +7,8 @@ const MySelect = () => {
 
 	const getFilterCard = selectedValue => {
 		setValue(selectedValue)
-		dispatch({
-			type: 'FILTER_CARD',
-			payload: selectedValue,
-		})
 	}
+
 	return (
 		<>
 			<Select
@@ -24,7 +21,7 @@ const MySelect = () => {
 					(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
 				}
 				options={[
-					{ value: '', label: 'Все карточки' },
+					{ value: 'all', label: 'Все карточки' },
 					{
 						value: 'Like',
 						label: 'Понравившиеся',

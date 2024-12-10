@@ -25,18 +25,7 @@ export const fetchCards = () => {
 		}
 	}
 }
-export const setLike = (id) => ({
-		type: 'CARD_LIKE',
-		payload: id,
-})
-export const setFavorite = (id) => ({
-		type: 'CARD_FAVORITE',
-		payload: id,
-	})
-export const removeCard = (id) => ({
-		type: 'REMOVE_CARD',
-		payload: id,
-})
+
 export const cardById = (navigate, id) => {
 	navigate(`/card/${id}`)
 }

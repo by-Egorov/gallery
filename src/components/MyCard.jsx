@@ -11,7 +11,7 @@ const MyCard = ({
 	favorite,
 	setLike,
 	setFavorite,
-	removeCard,
+	removedCard,
 	cardById,
 }) => (
 	<Card
@@ -52,7 +52,7 @@ const MyCard = ({
 				key='delete'
 				onClick={e => {
 					e.stopPropagation()
-					removeCard(id)
+					removedCard(id)
 				}}
 				style={{ color: '#E34234' }}
 			/>,

@@ -4,12 +4,7 @@ import MyModal from '../components/MyModal'
 import MyCard from '../components/MyCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import {
-	setLike,
-	setFavorite,
-	removeCard,
-	cardById,
-} from '../store/cardActions'
+import { cardById } from '../store/cardActions'
 import MySelect from '../components/TempMySelect'
 const { Header, Footer, Content } = Layout
 
@@ -24,11 +19,26 @@ const CardList = () => {
 	const showModal = () => {
 		setOpen(true)
 	}
-	const handleSetLike = id => dispatch(setLike(id))
-	const handleSetFavorite = id => dispatch(setFavorite(id))
-	const handleRemoveCard = id => dispatch(removeCard(id))
+	const removedCard = (id) => {
+		dispatch({
+			type: 'REMOVED_CARD',
+			payload: id
+		})
+	}
+
+	const setLike = (id) => {
+		dispatch({
+			type: 'SET_LIKE',
+			payload: id
+		})
+	}
+	const setFavorite = (id) => {
+		dispatch({
+			type: 'SET_FAVORITE',
+			payload: id
+		})
+	}
 	const handleCardById = id => cardById(navigate, id)
-	console.log(cards)
 
 	return (
 		<Flex gap='middle' wrap>
@@ -43,7 +53,7 @@ const CardList = () => {
 						</div>
 						<div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
 							<span>sort by:</span>
-							<MySelect/>
+							<MySelect />
 						</div>
 					</Header>
 					<Content className='content'>
@@ -59,9 +69,9 @@ const CardList = () => {
 										description={card.description}
 										like={card.like}
 										favorite={card.favorite}
-										removeCard={handleRemoveCard}
-										setLike={handleSetLike}
-										setFavorite={handleSetFavorite}
+										removedCard={removedCard}
+										setLike={setLike}
+										setFavorite={setFavorite}
 										id={card.id}
 										cardById={handleCardById}
 									/>
