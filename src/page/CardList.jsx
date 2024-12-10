@@ -10,7 +10,7 @@ import {
 	removeCard,
 	cardById,
 } from '../store/cardActions'
-import MySelect from '../components/mySelect'
+import MySelect from '../components/TempMySelect'
 const { Header, Footer, Content } = Layout
 
 const CardList = () => {
@@ -43,7 +43,7 @@ const CardList = () => {
 						</div>
 						<div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
 							<span>sort by:</span>
-							<MySelect />
+							<MySelect/>
 						</div>
 					</Header>
 					<Content className='content'>
