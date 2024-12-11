@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Flex, Layout } from 'antd'
 import MyModal from '../components/MyModal'
 import MyCard from '../components/MyCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { cardById } from '../store/cardActions'
 import MySelect from '../components/TempMySelect'
 const { Header, Footer, Content } = Layout
 
 const CardList = () => {
 	const navigate = useNavigate()
+	const location = useLocation()
 	const dispatch = useDispatch()
 	const cards = useSelector(state => state.cards)
 
@@ -17,6 +18,12 @@ const CardList = () => {
 	const showModal = () => {
 		setOpen(true)
 	}
+	useEffect(() => {
+    const scrollPosition = location.state?.scrollPosition || 0;
+    window.scrollTo(0, scrollPosition);
+  }, [location.state]);
+
+
 	const removedCard = (id) => {
 		dispatch({
 			type: 'REMOVED_CARD',

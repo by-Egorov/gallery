@@ -11,7 +11,7 @@ export const setFavorite = id => ({
 })
 export const removeCard = id => ({
 	type: 'REMOVED_CARD',
-	payload: id
+	payload: id,
 })
 export const fetchCardsRequest = () => ({
 	type: 'FETCH_CARDS_REQUEST',
@@ -40,5 +40,6 @@ export const fetchCards = () => {
 }
 
 export const cardById = (navigate, id) => {
-	navigate(`/card/${id}`)
+	const scrollPosition = window.scrollY 
+	navigate(`/card/${id}`, { state: { scrollPosition } }) 
 }
