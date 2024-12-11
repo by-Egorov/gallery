@@ -15,11 +15,20 @@ export const fetchCardsFailure = error => ({
 })
 
 export const fetchCards = () => {
-	return async dispatch => {
+	return async (dispatch, getState) => {
 		dispatch(fetchCardsRequest())
 		try {
 			const response = await axios.get('https://fakestoreapi.com/products')
-			dispatch(fetchCardsSuccess(response.data))
+			const serverCards = response.data
+			const localCards = getState().cards.cards
+
+			// Слияние состояния
+			const mergedCards = serverCards.map(serverCard => {
+				const localCard = localCards.find(card => card.id === serverCard.id)
+				return localCard ? { ...serverCard, ...localCard } : serverCard
+			})
+
+			dispatch(fetchCardsSuccess(mergedCards))
 		} catch (error) {
 			dispatch(fetchCardsFailure(error.message))
 		}

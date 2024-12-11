@@ -9,12 +9,13 @@ import { thunk } from 'redux-thunk'
 const persistConfig = {
 	key: 'root',
 	storage,
+	whitelist: ['cards'],
 }
 
-const persistedReducer = persistReducer(
-	persistConfig,
-	cardReducer
-)
+const persistedReducer = persistReducer(persistConfig, cardReducer)
 
-export const store = createStore(persistedReducer,  composeWithDevTools(applyMiddleware(thunk)))
+export const store = createStore(
+	persistedReducer,
+	composeWithDevTools(applyMiddleware(thunk))
+)
 export const persistor = persistStore(store)

@@ -13,6 +13,19 @@ const CardItem = () => {
 	const cards = useSelector(state => state.cards)
 	const [card, setCard] = useState(null)
 
+	const setLike = (id) => {
+		dispatch({
+			type: 'SET_LIKE',
+			payload: id
+		})
+	}
+	const setFavorite = (id) => {
+		dispatch({
+			type: 'SET_FAVORITE',
+			payload: id
+		})
+	}
+
 	useEffect(() => {
 		if (Array.isArray(cards)) {
 			const foundCard = cards.find(card => card.id === Number(id))
@@ -51,7 +64,7 @@ const CardItem = () => {
 								key='like'
 								onClick={e => {
 									e.stopPropagation()
-									handleSetLike(id)
+									setLike(id)
 								}}
 								style={{ color: card.like ? '#3F00FF' : '' }}
 							/>,
@@ -59,7 +72,7 @@ const CardItem = () => {
 								key='favorite'
 								onClick={e => {
 									e.stopPropagation()
-									handleSetFavorite(id)
+									setFavorite(id)
 								}}
 								style={{ color: card.favorite ? '#ffd533' : '' }}
 							/>,
