@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Card, Button } from 'antd'
 import { DeleteFilled, StarFilled, LikeFilled } from '@ant-design/icons'
+import {setLike, setFavorite, removeCard} from '../store/cardActions'
 
 const { Meta } = Card
 
@@ -13,18 +14,17 @@ const CardItem = () => {
 	const cards = useSelector(state => state.cards)
 	const [card, setCard] = useState(null)
 
-	const setLike = (id) => {
-		dispatch({
-			type: 'SET_LIKE',
-			payload: id
-		})
+	const setLikeHandler = (id) => {
+		dispatch(setLike(id)) 
 	}
-	const setFavorite = (id) => {
-		dispatch({
-			type: 'SET_FAVORITE',
-			payload: id
-		})
+
+	const setFavoriteHandler = (id) => {
+		dispatch(setFavorite(id)) 
 	}
+	const setRemoveCardHandler = (id) => {
+		dispatch(removeCard(id)) 
+	}
+
 
 	useEffect(() => {
 		if (Array.isArray(cards)) {
@@ -64,7 +64,7 @@ const CardItem = () => {
 								key='like'
 								onClick={e => {
 									e.stopPropagation()
-									setLike(id)
+									setLikeHandler(card.id)
 								}}
 								style={{ color: card.like ? '#3F00FF' : '' }}
 							/>,
@@ -72,7 +72,7 @@ const CardItem = () => {
 								key='favorite'
 								onClick={e => {
 									e.stopPropagation()
-									setFavorite(id)
+									setFavoriteHandler(card.id)
 								}}
 								style={{ color: card.favorite ? '#ffd533' : '' }}
 							/>,
@@ -80,7 +80,7 @@ const CardItem = () => {
 								key='delete'
 								onClick={e => {
 									e.stopPropagation()
-									handleRemoveCard(id)
+									setRemoveCardHandler(card.id)
 								}}
 								style={{ color: '#E34234' }}
 							/>,

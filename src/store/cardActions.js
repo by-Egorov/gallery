@@ -1,5 +1,18 @@
 import axios from 'axios'
 
+export const setLike = id => ({
+	type: 'SET_LIKE',
+	payload: id,
+})
+
+export const setFavorite = id => ({
+	type: 'SET_FAVORITE',
+	payload: id,
+})
+export const removeCard = id => ({
+	type: 'REMOVED_CARD',
+	payload: id
+})
 export const fetchCardsRequest = () => ({
 	type: 'FETCH_CARDS_REQUEST',
 })
@@ -15,20 +28,11 @@ export const fetchCardsFailure = error => ({
 })
 
 export const fetchCards = () => {
-	return async (dispatch, getState) => {
+	return async dispatch => {
 		dispatch(fetchCardsRequest())
 		try {
 			const response = await axios.get('https://fakestoreapi.com/products')
-			const serverCards = response.data
-			const localCards = getState().cards.cards
-
-			// Слияние состояния
-			const mergedCards = serverCards.map(serverCard => {
-				const localCard = localCards.find(card => card.id === serverCard.id)
-				return localCard ? { ...serverCard, ...localCard } : serverCard
-			})
-
-			dispatch(fetchCardsSuccess(mergedCards))
+			dispatch(fetchCardsSuccess(response.data))
 		} catch (error) {
 			dispatch(fetchCardsFailure(error.message))
 		}

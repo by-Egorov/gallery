@@ -39,12 +39,21 @@ export const cardReducer = (state = initialState, action) => {
 				...state,
 				loading: true,
 			}
-		case 'FETCH_CARDS_SUCCESS':
-			return {
-				...state,
-				loading: false,
-				cards: action.payload,
-			}
+			case 'FETCH_CARDS_SUCCESS':
+				return {
+					...state,
+					cards: action.payload.map(card => {
+						const localCard = state.cards.find(localCard => localCard.id === card.id);
+						return localCard ? { ...card, ...localCard } : card;
+					}),
+				};
+			case 'UPDATE_CARD_STATUS':
+				return {
+					...state,
+					cards: state.cards.map(card => 
+						card.id === action.payload.id ? { ...card, ...action.payload.status } : card
+					),
+				};
 		case 'FETCH_CARDS_FAILURE':
 			return {
 				...state,
