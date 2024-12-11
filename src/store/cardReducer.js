@@ -25,13 +25,32 @@ export const cardReducer = (state = initialState, action) => {
 					card.id === action.payload ? { ...card, like: !card.like } : card
 				),
 			}
-			case 'SET_FAVORITE':
-				return {
-					...state,
-					cards: state.cards.map(card =>
-						card.id === action.payload ? { ...card, favorite: !card.favorite } : card
-					),
-				}
+		case 'SET_FAVORITE':
+			return {
+				...state,
+				cards: state.cards.map(card =>
+					card.id === action.payload
+						? { ...card, favorite: !card.favorite }
+						: card
+				),
+			}
+		case 'FETCH_CARDS_REQUEST':
+			return {
+				...state,
+				loading: true,
+			}
+		case 'FETCH_CARDS_SUCCESS':
+			return {
+				...state,
+				loading: false,
+				cards: action.payload,
+			}
+		case 'FETCH_CARDS_FAILURE':
+			return {
+				...state,
+				loading: false,
+				error: action.payload,
+			}
 		default:
 			return state
 	}
