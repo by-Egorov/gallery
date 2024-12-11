@@ -11,9 +11,7 @@ const { Header, Footer, Content } = Layout
 const CardList = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
-	const cards = useSelector(state =>
-		state.filteredCards.length > 0 ? state.filteredCards : state.cards
-	)
+	const cards = useSelector(state => state.cards)
 
 	const [open, setOpen] = useState(false)
 	const showModal = () => {
