@@ -18,7 +18,7 @@ export const fetchCards = () => {
 	return async dispatch => {
 		dispatch(fetchCardsRequest())
 		try {
-			const response = await axios.get('/cards')
+			const response = await axios.get('/api/cards')
 			dispatch(fetchCardsSuccess(response.data))
 		} catch (error) {
 			dispatch(fetchCardsFailure(error.message))
