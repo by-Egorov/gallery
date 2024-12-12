@@ -6,22 +6,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { cardById } from '../store/cardActions'
 import MySelect from '../components/TempMySelect'
+import { LoadingOutlined } from '@ant-design/icons'
 
 const { Header, Footer, Content } = Layout
 
 // Функция фильтрации, аргументы - массив и тип фильтрации(value из select (/TempMySelect.jsx)
 const filterCards = (cards, filterType) => {
-  if (filterType.includes('favorite')) return cards.filter(card => card.favorite)
+  if (filterType.includes('favorite'))
+    return cards.filter(card => card.favorite)
   if (filterType.includes('like')) return cards.filter(card => card.like)
   return cards
 }
 
 // на вход принимает message(фраза, которая отображается)
+// eslint-disable-next-line react/prop-types
 const NoCardsMessage = ({ message }) => (
   <div
     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
   >
-    <span style={{ transform: 'rotate(90deg)', fontSize: '32px' }}>:(</span>
+    <span style={{ transform: 'rotate(90deg)', fontSize: '32px' }}>
+      <LoadingOutlined />
+    </span>
     <div>{message}</div>
   </div>
 )
@@ -67,7 +72,7 @@ const CardList = () => {
           </Header>
           <Content className='content'>
             <div className='cards__wrapper'>
-             {/*условная отрисовка, если массив с карточками определенного типа пустой, обрисовывается message, иначе массив карточек с полями like или favorite равными true иначем общий массив карточек*/}
+              {/*условная отрисовка, если массив с карточками определенного типа пустой, обрисовывается message, иначе массив карточек с полями like или favorite равными true иначем общий массив карточек*/}
               {filteredCards.length > 0 ? (
                 filteredCards.map(card => (
                   <MyCard

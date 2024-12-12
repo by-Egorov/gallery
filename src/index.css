@@ -1,36 +1,56 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 .layout {
-  overflow: hidden;
-  width: 100%;
-  max-width: 100%;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
 }
+
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #ffffff;
-  height: 64px;
-  padding: 48px;
-  line-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ffffff;
+    height: 64px;
+    padding: 48px;
+    line-height: 64px;
 }
+
 .content {
-  text-align: center;
-  height: 100%;
-  line-height: 120px;
+    text-align: center;
+    height: 100%;
+    line-height: 120px;
 }
+
 .cards__wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 25px;
 }
+
+.select {
+    width: 200px;
+}
+
 .footer {
-  text-align: center;
-  height: 64px;
+    text-align: center;
+    height: 64px;
+}
+
+@media (max-width: 700px) {
+    .header {
+        flex-direction: column;
+        justify-content: center;
+        height: 110px;
+        padding: 0px;
+        line-height: 0px;
+        gap: 15px;
+    }
 }

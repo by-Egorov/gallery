@@ -8,9 +8,9 @@ const MySelect = ({ setValue }) => {
   return (
     <>
       <Select
-        style={{ width: '200px' }}
+       className='select'
         onChange={getFilterCard}
-        showSearch
+        showSearch={false}
         placeholder='Filter by..'
         filterOption={(input, option) =>
           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
