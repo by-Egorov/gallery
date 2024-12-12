@@ -34,6 +34,7 @@ export const cardReducer = (state = initialState, action) => {
 						: card
 				),
 			}
+
 		case 'FETCH_CARDS_REQUEST':
 			return {
 				...state,

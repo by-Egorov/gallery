@@ -1,38 +1,37 @@
-import React, { useState } from 'react'
 import { Select } from 'antd'
-import { useDispatch } from 'react-redux'
-const MySelect = () => {
-	const dispatch = useDispatch()
-	const [value, setValue] = useState('')
 
-	const getFilterCard = selectedValue => {
-		setValue(selectedValue)
-	}
+const MySelect = ({ setValue }) => {
+  const getFilterCard = selectedValue => {
+    setValue(selectedValue)
+  }
 
-	return (
-		<>
-			<Select
-				style={{ width: '200px' }}
-				value={value}
-				onChange={getFilterCard}
-				showSearch
-				placeholder='Select..'
-				filterOption={(input, option) =>
-					(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-				}
-				options={[
-					{ value: 'all', label: 'Все карточки' },
-					{
-						value: 'Like',
-						label: 'Понравившиеся',
-					},
-					{
-						value: 'Favorite',
-						label: 'Избранные',
-					},
-				]}
-			/>
-		</>
-	)
+  return (
+    <>
+      <Select
+        style={{ width: '200px' }}
+        onChange={getFilterCard}
+        showSearch
+        placeholder='Filter by..'
+        filterOption={(input, option) =>
+          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        }
+        defaultValue={{ value: 'all', label: 'Все карточки' }}
+        options={[
+          {
+            value: 'all',
+            label: 'Все карточки',
+          },
+          {
+            value: 'like',
+            label: 'Понравившиеся',
+          },
+          {
+            value: 'favorite',
+            label: 'Избранные',
+          },
+        ]}
+      />
+    </>
+  )
 }
 export default MySelect
