@@ -8,35 +8,10 @@ import { cardById } from '../store/cardActions'
 import MySelect from '../components/TempMySelect'
 import { LoadingOutlined } from '@ant-design/icons'
 import MyPagination from '../components/MyPagination.jsx'
+import usePaginatedAndFilteredCards from '../hooks/usePaginatedAndFilteredCards.js'
 
 const { Header, Footer, Content } = Layout
 
-const useResponsiveCardsPerPage = () => {
-  const calculateCardsPerPage = () => {
-    const width = window.innerWidth
-    if (width >= 1200) return 8 // На широких экранах
-    if (width >= 768) return 6 // На средних экранах
-    return 4 // На маленьких экранах
-  }
-
-  const [cardsPerPage, setCardsPerPage] = useState(calculateCardsPerPage)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setCardsPerPage(calculateCardsPerPage())
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  return cardsPerPage
-}
-
-// на вход принимает message(фраза, которая отображается)
-// eslint-disable-next-line react/prop-types
 const NoCardsMessage = ({ message }) => (
   <div
     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
@@ -47,24 +22,6 @@ const NoCardsMessage = ({ message }) => (
     <div>{message}</div>
   </div>
 )
-const useFilteredAndPaginatedCards = (
-  cards,
-  filterType,
-  currentPage,
-  cardsPerPage,
-) => {
-  const filteredCards =
-    filterType === 'favorite'
-      ? cards.filter(card => card.favorite)
-      : filterType === 'like'
-        ? cards.filter(card => card.like)
-        : cards
-
-  const lastIndex = currentPage * cardsPerPage
-  const firstIndex = lastIndex - cardsPerPage
-
-  return filteredCards.slice(firstIndex, lastIndex)
-}
 
 const CardList = () => {
   const navigate = useNavigate()
@@ -72,29 +29,11 @@ const CardList = () => {
   const dispatch = useDispatch()
   const cards = useSelector(state => state.cards)
   const [filterType, setFilterType] = useState('')
-  // const [value, setValue] = useState('')
   const [open, setOpen] = useState(false)
 
-  //Pagination
-
   const [currentPage, setCurrentPage] = useState(1)
-  const cardsPerPage = useResponsiveCardsPerPage()
-
-  const totalFilteredCards =
-    filterType === 'favorite'
-      ? cards.filter(card => card.favorite).length
-      : filterType === 'like'
-        ? cards.filter(card => card.like).length
-        : cards.length
-
-  const currentCards = useFilteredAndPaginatedCards(
-    cards,
-    filterType,
-    currentPage,
-    cardsPerPage,
-  )
-
-  //Pagination
+  const { currentCards, totalFilteredCards, cardsPerPage } =
+    usePaginatedAndFilteredCards(cards, filterType, currentPage)
 
   const showModal = () => {
     setOpen(true)
@@ -113,7 +52,6 @@ const CardList = () => {
   const handleCardAction = (action, id) => {
     dispatch({ type: action, payload: id })
   }
-
 
   return (
     <Flex gap='middle' wrap>
