@@ -1,8 +1,9 @@
 import { Select } from 'antd'
 
-const MySelect = ({ setValue }) => {
+const MySelect = ({ setFilterType }) => {
   const getFilterCard = selectedValue => {
-    setValue(selectedValue)
+    console.log('Selected value:', selectedValue)
+    setFilterType(selectedValue)
   }
 
   return (

@@ -21,6 +21,10 @@
 }
 
 .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     height: 100%;
     line-height: 120px;
@@ -37,6 +41,10 @@
 
 .select {
     width: 200px;
+    text-align: center;
+}
+.select[options] {
+    text-align: center;
 }
 
 .footer {
