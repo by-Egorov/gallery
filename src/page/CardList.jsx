@@ -32,6 +32,7 @@ const CardList = () => {
   const [open, setOpen] = useState(false)
 
   const [currentPage, setCurrentPage] = useState(1)
+  // const currentPage = useSelector(state => state.cards.currentPage)
   const { currentCards, totalFilteredCards, cardsPerPage } =
     usePaginatedAndFilteredCards(cards, filterType, currentPage)
 

@@ -20,13 +20,13 @@ const MyModal = ({ open, setOpen }) => {
   const onCreate = values => {
     const timestamp = Date.now()
 
-    const fileUrl = values.file?.[0]?.thumbUrl || null
+    const image = values.file?.[0]?.thumbUrl || null
 console.log(values)
     const newCard = {
       id: timestamp,
       title: values.title,
       description: values.description || '',
-      fileUrl,
+      image,
     }
     dispatch({
       type: 'ADD_CARD',

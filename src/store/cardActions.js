@@ -26,6 +26,10 @@ export const fetchCardsFailure = error => ({
   type: 'FETCH_CARDS_FAILURE',
   payload: error,
 })
+export const setCurrentPage = page => ({
+  type: 'SET_CURRENT_PAGE',
+  payload: page,
+})
 
 export const fetchCards = () => {
   return async dispatch => {
