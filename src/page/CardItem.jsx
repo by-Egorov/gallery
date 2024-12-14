@@ -34,7 +34,7 @@ const CardItem = () => {
       setCard(foundCard)
     }
   }, [id, cards])
-
+console.log(window.scrollY)
   return (
     <>
       {card ? (

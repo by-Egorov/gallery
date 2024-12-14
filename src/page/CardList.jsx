@@ -51,7 +51,7 @@ const CardList = () => {
   }, [scrollPosition])
 
   useEffect(() => {
-    dispatch(setScrollPosition(0))
+    // dispatch(setScrollPosition(0))
   }, [filterType])
   useEffect(() => {
     setCurrentPage(currentPage)
@@ -61,7 +61,6 @@ const CardList = () => {
   }
   const handlePageChange = page => {
     dispatch(setCurrentPage(page))
-    dispatch(setScrollPosition(0))
     setCurrentPage(page)
   }
 
