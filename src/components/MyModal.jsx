@@ -21,11 +21,12 @@ const MyModal = ({ open, setOpen }) => {
     const timestamp = Date.now()
 
     const image = values.file?.[0]?.thumbUrl || null
-console.log(values)
     const newCard = {
       id: timestamp,
       title: values.title,
       description: values.description || '',
+      like: false,
+      favorite: false,
       image,
     }
     dispatch({

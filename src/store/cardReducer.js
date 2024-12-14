@@ -47,16 +47,14 @@ export const cardReducer = (state = initialState, action) => {
         ),
       }
     case FETCH_CARDS_SUCCESS:
+      // Добавляем только новые карточки из API, избегая дублирования
+      { const newCards = action.payload.filter(
+          (apiCard) => !state.cards.some((card) => card.id === apiCard.id)
+      )
       return {
         ...state,
-        cards: action.payload.map(card => {
-          const localCard = (state.cards || []).find(
-            localCard => localCard.id === card.id,
-          )
-          return localCard ? { ...card, ...localCard } : card
-        }),
-        loading: false,
-      }
+        cards: [...state.cards, ...newCards],
+      } }
     case SET_SCROLL_POSITION:
       return {
         ...state,
@@ -67,7 +65,7 @@ export const cardReducer = (state = initialState, action) => {
         ...state,
         currentPage: action.payload,
       }
-    case 'SET_FILTER_TYPE':
+    case SET_FILTER_TYPE:
       return {
         ...state,
         filterType: action.payload,
