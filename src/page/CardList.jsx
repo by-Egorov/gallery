@@ -32,7 +32,6 @@ const CardList = () => {
   const [open, setOpen] = useState(false)
 
   const [currentPage, setCurrentPage] = useState(1)
-  // const currentPage = useSelector(state => state.cards.currentPage)
   const { currentCards, totalFilteredCards, cardsPerPage } =
     usePaginatedAndFilteredCards(cards, filterType, currentPage)
 
@@ -40,6 +39,7 @@ const CardList = () => {
     setOpen(true)
   }
   useEffect(() => {
+    // Восстанавливаем позицию скролла, если она есть в состоянии
     const scrollPosition = location.state?.scrollPosition || 0
     window.scrollTo(0, scrollPosition)
   }, [location.state])
@@ -48,7 +48,12 @@ const CardList = () => {
     setCurrentPage(1) // Сбрасываем на первую страницу
   }, [filterType])
 
-  const handleCardById = id => cardById(navigate, id)
+  const handleCardById = id => {
+    const scrollPosition = window.scrollY
+    navigate(`/card/${id}`, {
+      state: { scrollPosition }, // Сохраняем позицию прокрутки
+    })
+  }
 
   const handleCardAction = (action, id) => {
     dispatch({ type: action, payload: id })
@@ -84,7 +89,7 @@ const CardList = () => {
                     setFavorite={() =>
                       handleCardAction('SET_FAVORITE', card.id)
                     }
-                    cardById={handleCardById}
+                    cardById={() => handleCardById(card.id)}
                   />
                 ))
               ) : (

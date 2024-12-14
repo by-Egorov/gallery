@@ -24,7 +24,7 @@ const CardItem = () => {
   const setRemoveCardHandler = id => {
     dispatch(removeCard(id))
   }
-
+const handleBack = () => navigate(-1)
   useEffect(() => {
     if (Array.isArray(cards)) {
       const foundCard = cards.find(card => card.id === Number(id))
@@ -33,9 +33,9 @@ const CardItem = () => {
   }, [id, cards])
 
   useEffect(() => {
-    const scrollPosition = location.state?.scrollPosition || 0
-    window.scrollTo(0, scrollPosition)
-  }, [location.state])
+    // При входе на карточку позиция скролла сбрасывается
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <>
@@ -100,7 +100,7 @@ const CardItem = () => {
       ) : (
         <div style={{ padding: '20px' }}>
           <p>Карточка не найдена</p>
-          <Link onClick={() => navigate(-1)}>Назад</Link>
+          <button onClick={handleBack}>Назад</button>
         </div>
       )}
     </>

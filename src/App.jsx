@@ -1,22 +1,33 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import CardList from './page/CardList'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchCards } from './store/cardActions'
 import { Routes, Route } from 'react-router-dom'
 import CardItem from './page/CardItem'
+import axios from 'axios'
+import {useDispatch} from "react-redux";
+
 const App = () => {
-	const dispatch = useDispatch()
+const dispatch = useDispatch()
 
-	useEffect(() => {
-		dispatch(fetchCards())
-	}, [dispatch])
+  useEffect(() => {
 
-	return (
-		<Routes>
-			<Route path='/card/:id' element={<CardItem />}/>
-      <Route path='/' element={<CardList />}/>
-		</Routes>
-	)
+      const fetchData = async () => {
+          const res = await axios.get('https://fakestoreapi.com/products')
+          console.log(res.data)
+
+          dispatch({
+              type: 'FETCH_CARDS_SUCCESS',
+              payload: res.data,
+          })
+      }
+      fetchData()
+  }, [dispatch])
+
+  return (
+    <Routes>
+      <Route path='/card/:id' element={<CardItem />} />
+      <Route path='/' element={<CardList />} />
+    </Routes>
+  )
 }
 
 export default App
