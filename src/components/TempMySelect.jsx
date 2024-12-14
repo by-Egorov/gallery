@@ -1,15 +1,19 @@
 import { Select } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { setFilterType } from '../store/cardActions.js'
 
-const MySelect = ({ setFilterType }) => {
+const MySelect = () => {
+  const filterType = useSelector(state => state.filterType)
+  const dispatch = useDispatch()
   const getFilterCard = selectedValue => {
     console.log('Selected value:', selectedValue)
-    setFilterType(selectedValue)
+    dispatch(setFilterType(selectedValue))
   }
-
   return (
     <>
       <Select
-       className='select'
+        className='select'
+        value={filterType}
         onChange={getFilterCard}
         showSearch={false}
         placeholder='Filter by..'

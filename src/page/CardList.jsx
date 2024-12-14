@@ -3,12 +3,12 @@ import { Button, Flex, Layout } from 'antd'
 import MyModal from '../components/MyModal'
 import MyCard from '../components/MyCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { cardById } from '../store/cardActions'
+import { useNavigate } from 'react-router-dom'
 import MySelect from '../components/TempMySelect'
 import { LoadingOutlined } from '@ant-design/icons'
 import MyPagination from '../components/MyPagination.jsx'
 import usePaginatedAndFilteredCards from '../hooks/usePaginatedAndFilteredCards.js'
+import {setFilterType, setCurrentPage, setScrollPosition } from '../store/cardActions.js'
 
 const { Header, Footer, Content } = Layout
 
@@ -25,38 +25,50 @@ const NoCardsMessage = ({ message }) => (
 
 const CardList = () => {
   const navigate = useNavigate()
-  const location = useLocation()
   const dispatch = useDispatch()
+
   const cards = useSelector(state => state.cards)
-  const [filterType, setFilterType] = useState('')
+  const scrollPosition = useSelector(state => state.scrollPosition)
+  const currentPage = useSelector(state => state.currentPage)
+  const filterType = useSelector(state => state.filterType)
+
   const [open, setOpen] = useState(false)
 
-  const [currentPage, setCurrentPage] = useState(1)
   const { currentCards, totalFilteredCards, cardsPerPage } =
     usePaginatedAndFilteredCards(cards, filterType, currentPage)
 
   const showModal = () => {
     setOpen(true)
   }
-  useEffect(() => {
-    // Восстанавливаем позицию скролла, если она есть в состоянии
-    const scrollPosition = location.state?.scrollPosition || 0
-    window.scrollTo(0, scrollPosition)
-  }, [location.state])
-
-  useEffect(() => {
-    setCurrentPage(1) // Сбрасываем на первую страницу
-  }, [filterType])
-
-  const handleCardById = id => {
-    const scrollPosition = window.scrollY
-    navigate(`/card/${id}`, {
-      state: { scrollPosition }, // Сохраняем позицию прокрутки
-    })
+  const handleFilterChange = selectedFilter => {
+    dispatch(setFilterType(selectedFilter))
+    dispatch(setCurrentPage(1))
+    // dispatch(setScrollPosition(0))
+    dispatch(setScrollPosition(window.scrollY))
   }
+  useEffect(() => {
+    window.scrollTo(0, scrollPosition)
+  }, [scrollPosition])
 
+  useEffect(() => {
+    dispatch(setScrollPosition(0))
+  }, [filterType])
+  useEffect(() => {
+    setCurrentPage(currentPage)
+  }, [currentPage])
   const handleCardAction = (action, id) => {
     dispatch({ type: action, payload: id })
+  }
+  const handlePageChange = page => {
+    dispatch(setCurrentPage(page))
+    dispatch(setScrollPosition(0))
+    setCurrentPage(page)
+  }
+
+  const cardById = id => {
+    dispatch(setScrollPosition(window.scrollY))
+    dispatch(setCurrentPage(currentPage))
+    navigate(`/card/${id}`)
   }
 
   return (
@@ -71,7 +83,7 @@ const CardList = () => {
               <MyModal open={open} setOpen={setOpen} />
             </div>
             <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-              <MySelect setFilterType={setFilterType} />
+              <MySelect setFilterType={handleFilterChange}/>
             </div>
           </Header>
           <Content className='content'>
@@ -89,7 +101,7 @@ const CardList = () => {
                     setFavorite={() =>
                       handleCardAction('SET_FAVORITE', card.id)
                     }
-                    cardById={() => handleCardById(card.id)}
+                    cardById={cardById}
                   />
                 ))
               ) : (
@@ -107,7 +119,7 @@ const CardList = () => {
             <MyPagination
               totalCards={totalFilteredCards}
               cardsPerPage={cardsPerPage}
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
             />
           </Content>
           <Footer className='footer'>egorov.dev@gmail.com</Footer>

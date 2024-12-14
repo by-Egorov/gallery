@@ -12,7 +12,6 @@ const dispatch = useDispatch()
 
       const fetchData = async () => {
           const res = await axios.get('https://fakestoreapi.com/products')
-          console.log(res.data)
 
           dispatch({
               type: 'FETCH_CARDS_SUCCESS',

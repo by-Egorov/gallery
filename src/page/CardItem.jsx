@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Card, Button } from 'antd'
 import { DeleteFilled, StarFilled, LikeFilled } from '@ant-design/icons'
-import { setLike, setFavorite, removeCard } from '../store/cardActions'
+import {setLike, setFavorite, removeCard, setScrollPosition} from '../store/cardActions'
 
 const { Meta } = Card
 
@@ -24,18 +24,16 @@ const CardItem = () => {
   const setRemoveCardHandler = id => {
     dispatch(removeCard(id))
   }
-const handleBack = () => navigate(-1)
+  const handleBack = () => {
+    dispatch(setScrollPosition(window.scrollY))
+    navigate(-1)
+  }
   useEffect(() => {
     if (Array.isArray(cards)) {
       const foundCard = cards.find(card => card.id === Number(id))
       setCard(foundCard)
     }
   }, [id, cards])
-
-  useEffect(() => {
-    // При входе на карточку позиция скролла сбрасывается
-    window.scrollTo(0, 0)
-  }, [])
 
   return (
     <>

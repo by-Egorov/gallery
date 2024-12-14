@@ -1,4 +1,3 @@
-
 export const setLike = id => ({
   type: 'SET_LIKE',
   payload: id,
@@ -11,7 +10,16 @@ export const removeCard = id => ({
   type: 'REMOVED_CARD',
   payload: id,
 })
-export const cardById = (navigate, id) => {
-  const scrollPosition = window.scrollY
-  navigate(`/card/${id}`, { state: { scrollPosition } })
-}
+export const setScrollPosition = position => ({
+  type: 'SET_SCROLL_POSITION',
+  payload: position,
+})
+export const setCurrentPage = page => ({
+  type: 'SET_CURRENT_PAGE',
+  payload: page,
+})
+
+export const setFilterType = filterType => ({
+  type: 'SET_FILTER_TYPE',
+  payload: filterType,
+})
