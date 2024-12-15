@@ -6,7 +6,6 @@ const MySelect = () => {
   const filterType = useSelector(state => state.filterType)
   const dispatch = useDispatch()
   const getFilterCard = selectedValue => {
-    console.log('Selected value:', selectedValue)
     dispatch(setFilterType(selectedValue))
   }
   return (

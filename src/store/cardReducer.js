@@ -6,6 +6,7 @@ const FETCH_CARDS_SUCCESS = 'FETCH_CARDS_SUCCESS'
 const SET_SCROLL_POSITION = 'SET_SCROLL_POSITION'
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_FILTER_TYPE = 'SET_FILTER_TYPE'
+const SORT_BY_CARDS = 'SORT_BY_CARDS'
 
 const initialState = {
   cards: [],
@@ -46,15 +47,15 @@ export const cardReducer = (state = initialState, action) => {
             : card,
         ),
       }
-    case FETCH_CARDS_SUCCESS:
-      // Добавляем только новые карточки из API, избегая дублирования
-      { const newCards = action.payload.filter(
-          (apiCard) => !state.cards.some((card) => card.id === apiCard.id)
+    case FETCH_CARDS_SUCCESS: {
+      const newCards = action.payload.filter(
+        apiCard => !state.cards.some(card => card.id === apiCard.id),
       )
       return {
         ...state,
         cards: [...state.cards, ...newCards],
-      } }
+      }
+    }
     case SET_SCROLL_POSITION:
       return {
         ...state,
@@ -70,6 +71,12 @@ export const cardReducer = (state = initialState, action) => {
         ...state,
         filterType: action.payload,
       }
+    case SORT_BY_CARDS: {
+      const cardsCopy = state.cards.map(card => card)
+      return {
+        cards: cardsCopy.sort((a, b) => (a.title > b.title ? 1 : -1)),
+      }
+    }
     default:
       return state
   }

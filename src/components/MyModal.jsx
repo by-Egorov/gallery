@@ -1,8 +1,6 @@
-import React from 'react'
 import { PlusOutlined } from '@ant-design/icons'
 import { Form, Input, Upload, Modal, Button } from 'antd'
 import { useDispatch } from 'react-redux'
-import log from "eslint-plugin-react/lib/util/log.js";
 
 const { TextArea } = Input
 

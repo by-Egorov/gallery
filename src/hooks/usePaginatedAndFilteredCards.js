@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect, useMemo} from 'react'
 
 // Хук для адаптивного количества карточек на странице
 const useResponsiveCardsPerPage = () => {
@@ -25,8 +25,20 @@ const useResponsiveCardsPerPage = () => {
     return cardsPerPage
 }
 
+//Хук поиска
+export const useCards = (cards, query) => {
+
+    const searchedCards = useMemo(() => {
+        if (!query) return cards
+
+        return cards.filter(card => card.title.toLowerCase().includes(query.toLowerCase()))
+    }, [query, cards])
+
+    return searchedCards
+}
+
 // Основной хук для фильтрации и пагинации карточек
-const usePaginatedAndFilteredCards = (cards, filterType, currentPage) => {
+export const usePaginatedAndFilteredCards = (cards, filterType, currentPage) => {
     const cardsPerPage = useResponsiveCardsPerPage()
 
     // Фильтрация карточек
@@ -48,4 +60,3 @@ const usePaginatedAndFilteredCards = (cards, filterType, currentPage) => {
     }
 }
 
-export default usePaginatedAndFilteredCards

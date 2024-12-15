@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, Flex, Layout } from 'antd'
+import { Button, Flex, Input, Layout } from 'antd'
 import MyModal from '../components/MyModal'
 import MyCard from '../components/MyCard'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,8 +7,16 @@ import { useNavigate } from 'react-router-dom'
 import MySelect from '../components/TempMySelect'
 import { LoadingOutlined } from '@ant-design/icons'
 import MyPagination from '../components/MyPagination.jsx'
-import usePaginatedAndFilteredCards from '../hooks/usePaginatedAndFilteredCards.js'
-import {setFilterType, setCurrentPage, setScrollPosition } from '../store/cardActions.js'
+
+import {
+  setFilterType,
+  setCurrentPage,
+  setScrollPosition,
+} from '../store/cardActions.js'
+import {
+  useCards,
+  usePaginatedAndFilteredCards,
+} from '../hooks/usePaginatedAndFilteredCards.js'
 
 const { Header, Footer, Content } = Layout
 
@@ -33,9 +41,13 @@ const CardList = () => {
   const filterType = useSelector(state => state.filterType)
 
   const [open, setOpen] = useState(false)
-
-  const { currentCards, totalFilteredCards, cardsPerPage } =
-    usePaginatedAndFilteredCards(cards, filterType, currentPage)
+  const [filter, setFilter] = useState({ query: '' })
+  const searchedCards = useCards(cards, filter.query || '')
+  const {
+    currentCards: paginatedCards,
+    totalFilteredCards,
+    cardsPerPage,
+  } = usePaginatedAndFilteredCards(searchedCards, filterType, currentPage)
 
   const showModal = () => {
     setOpen(true)
@@ -43,16 +55,13 @@ const CardList = () => {
   const handleFilterChange = selectedFilter => {
     dispatch(setFilterType(selectedFilter))
     dispatch(setCurrentPage(1))
-    // dispatch(setScrollPosition(0))
     dispatch(setScrollPosition(window.scrollY))
   }
   useEffect(() => {
     window.scrollTo(0, scrollPosition)
   }, [scrollPosition])
 
-  useEffect(() => {
-    // dispatch(setScrollPosition(0))
-  }, [filterType])
+  useEffect(() => {}, [filterType])
   useEffect(() => {
     setCurrentPage(currentPage)
   }, [currentPage])
@@ -61,6 +70,7 @@ const CardList = () => {
   }
   const handlePageChange = page => {
     dispatch(setCurrentPage(page))
+    dispatch(setScrollPosition(0))
     setCurrentPage(page)
   }
 
@@ -75,21 +85,30 @@ const CardList = () => {
       <Layout className='layout'>
         <Layout>
           <Header className='header'>
-            <div>
-              <Button type='primary' onClick={showModal}>
-                Новая карточка
-              </Button>
-              <MyModal open={open} setOpen={setOpen} />
-            </div>
-            <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-              <MySelect setFilterType={handleFilterChange}/>
+            <Button type='primary' onClick={showModal}>
+              Новая карточка
+            </Button>
+            <MyModal open={open} setOpen={setOpen} />
+            <div className='input-group'>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                <MySelect setFilterType={handleFilterChange} />
+              </div>
+              <div className='search'>
+                <Input
+                  placeholder='Search'
+                  value={filter.query}
+                  onChange={e =>
+                    setFilter({ ...filter, query: e.target.value })
+                  }
+                />
+              </div>
             </div>
           </Header>
           <Content className='content'>
             <div className='cards__wrapper'>
               {/*условная отрисовка, если массив с карточками определенного типа пустой, обрисовывается message, иначе массив карточек с полями like или favorite равными true иначе общий массив карточек*/}
-              {currentCards.length > 0 ? (
-                currentCards.map(card => (
+              {paginatedCards.length > 0 ? (
+                paginatedCards.map(card => (
                   <MyCard
                     key={card.id}
                     {...card}

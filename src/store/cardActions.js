@@ -23,3 +23,6 @@ export const setFilterType = filterType => ({
   type: 'SET_FILTER_TYPE',
   payload: filterType,
 })
+export const sortCards = () => ({
+  type: 'SORT_BY_CARDS',
+})
