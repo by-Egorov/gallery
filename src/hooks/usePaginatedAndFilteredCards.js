@@ -4,7 +4,7 @@ import {useState, useEffect, useMemo} from 'react'
 const useResponsiveCardsPerPage = () => {
     const calculateCardsPerPage = () => {
         const width = window.innerWidth
-        if (width >= 1200) return 8 // На широких экранах
+        if (width >= 1200) return 10 // На широких экранах
         if (width >= 768) return 6 // На средних экранах
         return 4 // На маленьких экранах
     }
